@@ -1,4 +1,10 @@
-export const CONTACTS = [
+export type Contact = {
+  id: string;
+  name: string;
+  program: string;
+};
+
+export const CONTACTS: Contact[] = [
   { id: "c1", name: "Awa Diop",       program: "Computer Science" },
   { id: "c2", name: "Mamadou Sy",     program: "Electrical Engineering" },
   { id: "c3", name: "Fatou Ndiaye",   program: "Computer Science" },
