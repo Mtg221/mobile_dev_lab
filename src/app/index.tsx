@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, StyleSheet, ScrollView, TextInput, Pressable } from "react-native";
+import { View, Text, StyleSheet, FlatList, TextInput, Pressable } from "react-native";
 import { Image } from "expo-image";
 
 const START_MESSAGES = [
@@ -41,14 +41,21 @@ export default function Chat() {
         <Text style={styles.name}>Awa Diop</Text>
       </View>
 
-      <ScrollView
+      <FlatList
+        data={messages}
+        keyExtractor={(m) => m.id}
+        renderItem={({ item }) => (
+          <Bubble text={item.text} mine={item.mine} />
+        )}
         style={styles.messages}
         contentContainerStyle={{ paddingVertical: 8 }}
-      >
-        {messages.map((m) => (
-          <Bubble key={m.id} text={m.text} mine={m.mine} />
-        ))}
-      </ScrollView>
+        ListEmptyComponent={
+          <Text style={styles.empty}>No messages yet. Say hello.</Text>
+        }
+        ListHeaderComponent={
+          <Text style={styles.dateLabel}>Today</Text>
+        }
+      />
 
       <View style={styles.footer}>
         <TextInput
@@ -80,6 +87,8 @@ const styles = StyleSheet.create({
   avatar: { width: 40, height: 40, borderRadius: 20 },
   name: { fontSize: 17, fontWeight: "bold" },
   messages: { flex: 1, backgroundColor: "#f4f4f4" },
+  empty: { textAlign: "center", color: "#888", paddingVertical: 32 },
+  dateLabel: { textAlign: "center", color: "#888", fontSize: 12, paddingBottom: 8 },
   bubble: {
     backgroundColor: "#fff",
     padding: 10,
