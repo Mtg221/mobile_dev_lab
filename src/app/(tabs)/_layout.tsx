@@ -1,10 +1,13 @@
 import { Tabs } from "expo-router";
+import { FavouritesProvider } from "@/context/FavouritesContext";
 
 export default function TabsLayout() {
   return (
-    <Tabs>
-      <Tabs.Screen name="index" options={{ title: "Home" }} />
-      <Tabs.Screen name="contacts" options={{ title: "Contacts" }} />
-    </Tabs>
+    <FavouritesProvider>
+      <Tabs>
+        <Tabs.Screen name="index" options={{ title: "Home" }} />
+        <Tabs.Screen name="contacts" options={{ title: "Contacts" }} />
+      </Tabs>
+    </FavouritesProvider>
   );
 }
