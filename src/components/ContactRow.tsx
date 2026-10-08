@@ -5,10 +5,12 @@ import { Contact } from "@/data/contacts";
 export function ContactRow({
   contact,
   selected,
+  favourite = false,
   onPress,
 }: {
   contact: Contact;
   selected?: boolean;
+  favourite?: boolean;
   onPress?: () => void;
 }) {
   return (
@@ -24,6 +26,7 @@ export function ContactRow({
         <Text style={styles.name}>{contact.name}</Text>
         <Text style={styles.program}>{contact.program}</Text>
       </View>
+      {favourite && <Text style={styles.star}>★</Text>}
     </Pressable>
   );
 }
@@ -35,4 +38,5 @@ const styles = StyleSheet.create({
   rowText: { flex: 1 },
   name: { fontSize: 16, fontWeight: "600" },
   program: { fontSize: 13, color: "#666" },
+  star: { fontSize: 18, color: "#f39c12" },
 });

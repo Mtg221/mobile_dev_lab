@@ -7,6 +7,7 @@ export default function TabsLayout() {
       <Tabs>
         <Tabs.Screen name="index" options={{ title: "Home" }} />
         <Tabs.Screen name="contacts" options={{ title: "Contacts" }} />
+        <Tabs.Screen name="favourites" options={{ title: "Favourites" }} />
       </Tabs>
     </FavouritesProvider>
   );
