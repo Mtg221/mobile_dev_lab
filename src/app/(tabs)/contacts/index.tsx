@@ -1,11 +1,11 @@
 import { useState, useMemo } from "react";
-import { View, Text, StyleSheet, FlatList, TextInput } from "react-native";
+import { View, Text, StyleSheet, FlatList, TextInput, Pressable } from "react-native";
+import { Link } from "expo-router";
 import { ContactRow } from "@/components/ContactRow";
-import { CONTACTS, Contact } from "@/data/contacts";
+import { CONTACTS } from "@/data/contacts";
 
 export default function Contacts() {
   const [query, setQuery] = useState("");
-  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const filtered = useMemo(
     () =>
@@ -20,11 +20,14 @@ export default function Contacts() {
       data={filtered}
       keyExtractor={(c) => c.id}
       renderItem={({ item }) => (
-        <ContactRow
-          contact={item}
-          selected={item.id === selectedId}
-          onPress={() => setSelectedId(item.id)}
-        />
+        <Link
+          href={{ pathname: "/contacts/[id]", params: { id: item.id } }}
+          asChild
+        >
+          <Pressable>
+            <ContactRow contact={item} />
+          </Pressable>
+        </Link>
       )}
       ListHeaderComponent={
         <View>
