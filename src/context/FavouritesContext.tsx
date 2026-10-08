@@ -1,22 +1,39 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useReducer, type ReactNode } from "react";
+
+type Action =
+  | { type: "add"; id: string }
+  | { type: "remove"; id: string }
+  | { type: "clear" };
+
+function favouritesReducer(ids: string[], action: Action): string[] {
+  switch (action.type) {
+    case "add":
+      return ids.includes(action.id) ? ids : [...ids, action.id];
+    case "remove":
+      return ids.filter((x) => x !== action.id);
+    case "clear":
+      return [];
+  }
+}
 
 type FavouritesValue = {
   ids: string[];
   toggle: (id: string) => void;
   isFavourite: (id: string) => boolean;
+  clear: () => void;
 };
 
 const FavouritesContext = createContext<FavouritesValue | null>(null);
 
 export function FavouritesProvider({ children }: { children: ReactNode }) {
-  const [ids, setIds] = useState<string[]>([]);
+  const [ids, dispatch] = useReducer(favouritesReducer, []);
 
   function toggle(id: string) {
-    setIds((current) =>
-      current.includes(id)
-        ? current.filter((x) => x !== id)
-        : [...current, id]
-    );
+    dispatch(ids.includes(id) ? { type: "remove", id } : { type: "add", id });
+  }
+
+  function clear() {
+    dispatch({ type: "clear" });
   }
 
   function isFavourite(id: string) {
@@ -24,7 +41,7 @@ export function FavouritesProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <FavouritesContext.Provider value={{ ids, toggle, isFavourite }}>
+    <FavouritesContext.Provider value={{ ids, toggle, isFavourite, clear }}>
       {children}
     </FavouritesContext.Provider>
   );

@@ -5,7 +5,7 @@ import { CONTACTS } from "@/data/contacts";
 import { useFavourites } from "@/context/FavouritesContext";
 
 export default function Favourites() {
-  const { ids } = useFavourites();
+  const { ids, clear } = useFavourites();
   const favourites = CONTACTS.filter((c) => ids.includes(c.id));
 
   return (
@@ -19,6 +19,16 @@ export default function Favourites() {
           </Pressable>
         </Link>
       )}
+      ListHeaderComponent={
+        favourites.length > 0 ? (
+          <View style={styles.headerRow}>
+            <Text style={styles.count}>{favourites.length} favourite(s)</Text>
+            <Pressable onPress={clear}>
+              <Text style={styles.action}>Clear all</Text>
+            </Pressable>
+          </View>
+        ) : null
+      }
       ItemSeparatorComponent={() => <View style={styles.separator} />}
       ListEmptyComponent={
         <Text style={styles.empty}>No favourites yet. Open a contact and tap ☆.</Text>
@@ -29,6 +39,14 @@ export default function Favourites() {
 }
 
 const styles = StyleSheet.create({
+  headerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingBottom: 8,
+  },
+  count: { color: "#888" },
+  action: { color: "#1a5276", fontWeight: "600" },
   separator: { height: 1, backgroundColor: "#e5e5e5" },
   empty: { textAlign: "center", color: "#888", paddingVertical: 32 },
 });
